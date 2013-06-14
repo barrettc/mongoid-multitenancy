@@ -4,6 +4,7 @@ module Mongoid
       extend ActiveSupport::Concern
 
       module ClassMethods
+
         attr_accessor :tenant_field
 
         def tenant(association = :account, options={})
@@ -44,7 +45,7 @@ module Mongoid
 
         # Redefine 'validates_with' to add the tenant scope when using a UniquenessValidator
         def validates_with(*args, &block)
-          if args.first == Validations::UniquenessValidator
+          if args.first == Validatable::UniquenessValidator
             args.last[:scope] = Array(args.last[:scope]) << self.tenant_field
           end
           super(*args, &block)
